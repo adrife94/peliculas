@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:peliculas/pages/models/actores_model.dart';
 import 'package:peliculas/pages/models/pelicula_modelo.dart';
 import 'dart:convert';
 
@@ -34,7 +35,7 @@ void disposeStreams() {
     final decodedData = json.decode(resp.body);
 
     final peliculas = Peliculas.fromJsonList(decodedData['results']);
-    print(peliculas.items[9].title);
+   // print(peliculas.items[9].title);
 
     return peliculas.items;
   }
@@ -44,6 +45,18 @@ void disposeStreams() {
     final url = Uri.https(_url, '3/movie/now_playing', {'api_key' : _apikey, 'language' : _language});
 
     return await procesarDatos(url);
+  }
+
+  Future<List<Actor>> getCast(String peliId) async {
+    final url = Uri.https(_url, '3/movie/$peliId/credits', {'api_key' : _apikey, 'language' : _language});
+
+    final respuesta = await http.get(url);
+    final decodedData = json.decode(respuesta.body);
+
+    final cast = new Cast.fromJsonList(decodedData['cast']);
+
+    return cast.actores;
+
   }
 
   Future<List<Pelicula>> getPopulares() async {
@@ -67,5 +80,11 @@ void disposeStreams() {
 
     return respuesta;
     
+  }
+
+  Future<List<Pelicula>> buscarPelicula(String query) async {
+    final url = Uri.https(_url, '3/search/movie', {'api_key' : _apikey, 'language' : _language, 'query' : query});
+
+    return await procesarDatos(url);
   }
 }

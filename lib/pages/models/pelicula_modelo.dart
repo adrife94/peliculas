@@ -20,6 +20,7 @@ class Peliculas {
 
 
 class Pelicula {
+  String uniqueId;
   int voteCount;
   int id;
   bool video;
@@ -81,6 +82,13 @@ class Pelicula {
 
   }
 
+  getBackgroundImg() {
+    if(posterPath != null) {
+      return 'https://image.tmdb.org/t/p/w500/$backdropPath';
+    } else {
+      return 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Imagen_no_disponible.svg/1200px-Imagen_no_disponible.svg.png';
+    }
 
+  }
 
 }
